@@ -3,7 +3,7 @@
 **TODO:**
 
 - [x] setup project
-- [ ] draw board
+- [x] draw board
 - [ ] pieces can be moved using keyboard
 - [ ] info panel with player info and game state
 - [ ] play against computer
