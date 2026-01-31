@@ -36,7 +36,7 @@ function ChessStoreConstructor() {
   );
   const turn = () => chess().turn();
   function moves(square: Square) {
-    return chess().moves({ square });
+    return chess().moves({ square, verbose: true });
   }
   function* move(from: Square, to: Square) {
     const prev = chess();

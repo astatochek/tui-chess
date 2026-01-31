@@ -41,13 +41,18 @@ const SQUARE_COLORS = {
   b: RGBA.fromHex("#BC7342"),
   w_under_cursor: RGBA.fromHex("#DEBA9073"),
   b_under_cursor: RGBA.fromHex("#BC734280"),
+  w_moved_to: RGBA.fromHex("#C9D6A4"),
+  b_moved_to: RGBA.fromHex("#8FA553"),
 } as const satisfies Record<string, RGBA>;
 
-function background(squareColor: Color, isUnderCursor: boolean): RGBA {
-  if (!isUnderCursor) {
-    return SQUARE_COLORS[squareColor];
+function background(squareColor: Color, isUnderCursor: boolean, canBeMovedTo: boolean): RGBA {
+  if (isUnderCursor) {
+    return SQUARE_COLORS[`${squareColor}_under_cursor`];
   }
-  return SQUARE_COLORS[`${squareColor}_under_cursor`];
+  if (canBeMovedTo) {
+    return SQUARE_COLORS[`${squareColor}_moved_to`];
+  }
+  return SQUARE_COLORS[squareColor];
 }
 
 export const BoardSquare: Component<PublicFields<ColoredSquare>> = (props) => {
@@ -56,13 +61,14 @@ export const BoardSquare: Component<PublicFields<ColoredSquare>> = (props) => {
   const cursor = useCursor();
   const isUnderCursor = createMemo(() => cursor.hovered().square === square());
   const isHolding = createMemo(() => cursor.held()?.square === square());
+  const canBeMovedTo = createMemo(() => cursor.moves().includes(square()));
 
   return (
     <box
       width={6}
       height={3}
       border={isHolding()}
-      backgroundColor={background(squareColor(), isUnderCursor())}
+      backgroundColor={background(squareColor(), isUnderCursor(), canBeMovedTo())}
       alignItems="center"
       justifyContent="center"
     >

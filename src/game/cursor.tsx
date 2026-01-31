@@ -39,6 +39,14 @@ function CursorConstructor() {
     return chess.board().at(pos);
   });
 
+  const moves = createMemo(() => {
+    const from = held() ?? hovered();
+    if (!from) {
+      return [];
+    }
+    return chess.moves(from.square).map((m) => m.to);
+  });
+
   useKeyboard((key) => {
     if (key.ctrl || key.shift) {
       return;
@@ -68,8 +76,8 @@ function CursorConstructor() {
     const holdingSquare = held()?.square;
     const canHold = chess.turn() === hovered().pieceColor;
     if (canHold) {
-      setHoldingPos(hoverPos());
-      console.log("Available moves:", chess.moves(held()!.square));
+      const isHoldingTheHovered = hovered().square === holdingSquare;
+      setHoldingPos(isHoldingTheHovered ? void 0 : hoverPos());
       return Result.ok();
     }
     if (!isNil(holdingSquare)) {
@@ -84,7 +92,7 @@ function CursorConstructor() {
   createEffect(() => console.log("Holding:", held(), holdingPos()));
   createEffect(() => console.log("Hover:", hovered(), holdingPos()));
 
-  return { hovered, held };
+  return { hovered, held, moves };
 }
 
 type CursorStore = ReturnType<typeof CursorConstructor>;
