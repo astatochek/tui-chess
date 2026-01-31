@@ -13,6 +13,7 @@
     "@opentui/core": "^0.1.75",
     "@opentui/solid": "^0.1.75",
     "babel-preset-solid": "1.9.9",
+    "better-result": "^2.7.0",
     "chess.js": "^1.4.0",
     "solid-js": "1.9.9"
   },

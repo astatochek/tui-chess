@@ -4,7 +4,7 @@
 
 - [x] setup project
 - [x] draw board
-- [ ] pieces can be moved using keyboard
+- [x] pieces can be moved using keyboard
 - [ ] info panel with player info and game state
 - [ ] play against computer
 - [ ] play against another player

@@ -55,7 +55,7 @@ export const BoardSquare: Component<PublicFields<ColoredSquare>> = (props) => {
 
   const cursor = useCursor();
   const isUnderCursor = createMemo(() => cursor.hovered().square === square());
-  const isHolding = createMemo(() => cursor.holding()?.square === square());
+  const isHolding = createMemo(() => cursor.held()?.square === square());
 
   return (
     <box

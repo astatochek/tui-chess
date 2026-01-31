@@ -1,5 +1,6 @@
 import { Chess, type Color, type PieceSymbol, type Square } from "chess.js";
 import type { Nil } from "@app/utils.ts";
+import { Ok, Result, TaggedError } from "better-result";
 
 export class ColoredSquare {
   readonly squareColor: Color;
@@ -107,5 +108,11 @@ export class Board {
         }),
       ),
     );
+  }
+}
+
+export class MoveError extends Error {
+  constructor(e: unknown) {
+    super(e instanceof Error ? e.message : JSON.stringify(e), { cause: e });
   }
 }
