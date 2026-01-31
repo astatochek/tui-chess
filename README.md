@@ -1,15 +1,12 @@
-# solid
+# TUI Chess
 
-To install dependencies:
+**TODO:**
 
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun dev
-```
+- [x] setup project
+- [ ] draw board
+- [ ] pieces can be moved using keyboard
+- [ ] info panel with player info and game state
+- [ ] play against computer
+- [ ] play against another player
 
 This project was created using `bun create tui`. [create-tui](https://git.new/create-tui) is the easiest way to get started with OpenTUI.

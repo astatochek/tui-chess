@@ -1,16 +1,11 @@
 {
   "name": "tui-chess",
-  "module": "src/index.tsx",
-  "type": "module",
   "private": true,
+  "type": "module",
+  "module": "src/index.tsx",
   "scripts": {
-    "dev": "bun run --watch src/index.tsx"
-  },
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
+    "dev": "bun run --watch src/index.tsx",
+    "format": "oxfmt ."
   },
   "dependencies": {
     "@babel/core": "^7.28.5",
@@ -18,6 +13,14 @@
     "@opentui/core": "^0.1.75",
     "@opentui/solid": "^0.1.75",
     "babel-preset-solid": "1.9.9",
+    "chess.js": "^1.4.0",
     "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxfmt": "^0.27.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }
