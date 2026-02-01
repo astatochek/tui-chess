@@ -36,7 +36,7 @@ const PIECE_ICONS = {
   },
 } as const satisfies Record<Color, Record<PieceSymbol, string>>;
 
-const SQUARE_COLORS = {
+export const SQUARE_COLORS = {
   w: RGBA.fromHex("#DEBA90"),
   b: RGBA.fromHex("#BC7342"),
   w_under_cursor: RGBA.fromHex("#DEBA9073"),

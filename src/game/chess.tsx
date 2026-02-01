@@ -35,6 +35,8 @@ function ChessStoreConstructor() {
     { equals: false },
   );
   const turn = () => chess().turn();
+  const history = () => [...chess().history()].reverse();
+
   function moves(square: Square) {
     return chess().moves({ square, verbose: true });
   }
@@ -48,6 +50,5 @@ function ChessStoreConstructor() {
     return move;
   }
 
-  createEffect(() => console.log("Turn:", turn()));
-  return { board, turn, moves, move };
+  return { board, turn, moves, move, history };
 }
