@@ -5,7 +5,7 @@ import { RGBA, StyledText } from "@opentui/core";
 import type { ColoredSquare } from "@app/game/model.ts";
 import { useCursor } from "@app/game/cursor.tsx";
 
-const PIECE_ICONS = {
+export const PIECE_ICONS = {
   w: {
     //p: "P",
     p: "♙",

@@ -20,9 +20,11 @@ export function useCursor() {
   return ctx;
 }
 
-export const CursorContextProvider: ParentComponent = (props) => (
-  <CursorContext.Provider value={CursorConstructor()}>{props.children}</CursorContext.Provider>
-);
+export const CursorContextProvider: ParentComponent = (props) => {
+  return (
+    <CursorContext.Provider value={CursorConstructor()}>{props.children}</CursorContext.Provider>
+  );
+};
 
 function CursorConstructor() {
   const chess = useChess();
@@ -49,6 +51,9 @@ function CursorConstructor() {
 
   useKeyboard((key) => {
     if (key.ctrl || key.shift) {
+      return;
+    }
+    if (showPromotionDialog()) {
       return;
     }
     if (key.name === "k" || key.name === "up" || key.name === "w") {
@@ -92,7 +97,9 @@ function CursorConstructor() {
   createEffect(() => console.log("Holding:", held(), holdingPos()));
   createEffect(() => console.log("Hover:", hovered(), holdingPos()));
 
-  return { hovered, held, moves };
+  const [showPromotionDialog, setShowPromotionDialog] = createSignal(true);
+
+  return { hovered, held, moves, showPromotionDialog };
 }
 
 type CursorStore = ReturnType<typeof CursorConstructor>;
