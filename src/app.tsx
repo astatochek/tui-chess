@@ -1,8 +1,8 @@
 import { type Component } from "solid-js";
-import { Board } from "@app/components/board.tsx";
 import { ChessContextProvider } from "@app/game/chess.tsx";
 import { useConsole } from "@app/utils.ts";
 import { CursorContextProvider } from "@app/game/cursor.tsx";
+import { Main } from "@app/components/main.tsx";
 
 export const App: Component = () => {
   useConsole();
@@ -10,7 +10,7 @@ export const App: Component = () => {
   return (
     <ChessContextProvider>
       <CursorContextProvider>
-        <Board></Board>
+        <Main />
       </CursorContextProvider>
     </ChessContextProvider>
   );
