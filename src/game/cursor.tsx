@@ -7,10 +7,11 @@ import {
   useContext,
 } from "solid-js";
 import { isNil, type Nil } from "@app/utils.ts";
-import { Pos } from "@app/game/model.ts";
+import { BOARD_SIZE, Pos, type Promotable } from "@app/game/model.ts";
 import { useChess } from "@app/game/chess.tsx";
 import { useKeyboard } from "@opentui/solid";
 import { Result } from "better-result";
+import { firstValueFrom, Subject } from "rxjs";
 
 export function useCursor() {
   const ctx = useContext(CursorContext);
@@ -69,14 +70,15 @@ function CursorConstructor() {
       setHoverPos((pos) => pos.left());
     }
     if (key.name === "space") {
-      const res = Result.gen(holdOrTryMove);
-      if (res.isErr()) {
-        console.error(res.error);
-      }
+      Result.gen(holdOrTryMove).then((res) => {
+        if (res.isErr()) {
+          console.error(res.error);
+        }
+      });
     }
   });
 
-  function* holdOrTryMove() {
+  async function* holdOrTryMove() {
     console.log("Holding handler");
     const holdingSquare = held()?.square;
     const canHold = chess.turn() === hovered().pieceColor;
@@ -86,8 +88,17 @@ function CursorConstructor() {
       return Result.ok();
     }
     if (!isNil(holdingSquare)) {
+      const isPromotion =
+        held()?.piece === "p" && (hoverPos().x === 0 || hoverPos().x === BOARD_SIZE - 1);
+      let promotion: Promotable | Nil = void 0;
+      if (isPromotion) {
+        console.log("Selecting a promotion");
+        setShowPromotionDialog(true);
+        promotion = await firstValueFrom(promoted);
+        console.log("Promoted to:", promotion);
+      }
       console.log("Attempting to move from:", holdingSquare);
-      yield* chess.move(holdingSquare, hovered().square);
+      yield* chess.move(holdingSquare, hovered().square, promotion);
       setHoldingPos(void 0);
       console.log("Moved to:", hovered().square);
     }
@@ -97,9 +108,16 @@ function CursorConstructor() {
   createEffect(() => console.log("Holding:", held(), holdingPos()));
   createEffect(() => console.log("Hover:", hovered(), holdingPos()));
 
-  const [showPromotionDialog, setShowPromotionDialog] = createSignal(true);
+  const [showPromotionDialog, setShowPromotionDialog] = createSignal(false);
 
-  return { hovered, held, moves, showPromotionDialog };
+  const promoted = new Subject<Promotable>();
+
+  function promoteTo(p: Promotable) {
+    promoted.next(p);
+    setShowPromotionDialog(false);
+  }
+
+  return { hovered, held, moves, showPromotionDialog, promoteTo };
 }
 
 type CursorStore = ReturnType<typeof CursorConstructor>;

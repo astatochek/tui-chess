@@ -22,9 +22,7 @@ export const Main: Component = () => {
         <InfoPanel />
       </box>
       <Show when={cursor.showPromotionDialog()}>
-        <Portal mount={renderer.root}>
-          <PromotionSelect color={chess.turn()} />
-        </Portal>
+        <PromotionSelect color={chess.turn()} />
       </Show>
     </box>
   );

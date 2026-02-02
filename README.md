@@ -7,7 +7,7 @@
 - [x] pieces can be moved using keyboard
 - [x] info panel with player info and game state
 - [ ] end game handling
-- [ ] promotions
+- [x] promotions
 - [ ] mode selector and mode provider
 - [ ] play against computer mode
 - [ ] play against another player mode

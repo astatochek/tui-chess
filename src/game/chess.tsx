@@ -7,8 +7,15 @@ import {
   useContext,
 } from "solid-js";
 import { Chess, type Square } from "chess.js";
-import { identity, isNil } from "@app/utils.ts";
-import { Board, BOARD_SIZE, ColoredSquare, MoveError, Pos } from "@app/game/model.ts";
+import { identity, isNil, type Nil } from "@app/utils.ts";
+import {
+  Board,
+  BOARD_SIZE,
+  ColoredSquare,
+  MoveError,
+  Pos,
+  type Promotable,
+} from "@app/game/model.ts";
 import { Result } from "better-result";
 
 export function useChess() {
@@ -27,8 +34,14 @@ const ChessContext = createContext<ChessStore>();
 
 type ChessStore = ReturnType<typeof ChessStoreConstructor>;
 
+const FEN = {
+  NEXT_MOVE_IS_A_PROMOTION: "4k3/P7/8/8/8/8/8/4K3 w - - 0 1",
+} as const;
+
 function ChessStoreConstructor() {
-  const [chess, setChess] = createSignal(new Chess(), { equals: false });
+  const [chess, setChess] = createSignal(new Chess(), {
+    equals: false,
+  });
   const board = createMemo<Board>(
     (prev) => prev.update(Board.toBoard(chess().board())),
     Board.toBoard(chess().board()),
@@ -40,10 +53,10 @@ function ChessStoreConstructor() {
   function moves(square: Square) {
     return chess().moves({ square, verbose: true });
   }
-  function* move(from: Square, to: Square) {
+  function* move(from: Square, to: Square, promotion: Promotable | Nil) {
     const prev = chess();
     const move = yield* Result.try({
-      try: () => prev.move({ from, to }),
+      try: () => prev.move({ from, to, promotion: promotion ?? void 0 }),
       catch: (e) => new MoveError(e),
     });
     setChess(identity);
