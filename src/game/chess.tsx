@@ -1,6 +1,5 @@
 import {
   createContext,
-  createEffect,
   createMemo,
   createSignal,
   type ParentComponent,
@@ -8,14 +7,7 @@ import {
 } from "solid-js";
 import { Chess, type Square } from "chess.js";
 import { identity, isNil, type Nil } from "@app/utils.ts";
-import {
-  Board,
-  BOARD_SIZE,
-  ColoredSquare,
-  MoveError,
-  Pos,
-  type Promotable,
-} from "@app/game/model.ts";
+import { Board, GameEnd, MoveError, type Promotable } from "@app/game/model.ts";
 import { Result } from "better-result";
 
 export function useChess() {
@@ -36,10 +28,13 @@ type ChessStore = ReturnType<typeof ChessStoreConstructor>;
 
 const FEN = {
   NEXT_MOVE_IS_A_PROMOTION: "4k3/P7/8/8/8/8/8/4K3 w - - 0 1",
+  WHITE_MATE_IN_ONE: "4k3/8/5Q2/8/8/8/8/4KR2 w - - 0 1",
+  BLACK_MATE_IN_ONE: "k7/8/8/8/8/5qn1/8/4K3 b - - 0 1",
+  STALEMATE_IN_ONE: "k7/8/1QK5/8/8/8/8/8 w - - 0 1",
 } as const;
 
 function ChessStoreConstructor() {
-  const [chess, setChess] = createSignal(new Chess(), {
+  const [chess, setChess] = createSignal(new Chess(FEN.WHITE_MATE_IN_ONE), {
     equals: false,
   });
   const board = createMemo<Board>(
@@ -63,5 +58,16 @@ function ChessStoreConstructor() {
     return move;
   }
 
-  return { board, turn, moves, move, history };
+  const gameEnd = createMemo(() => {
+    const game = chess();
+    if (game.isGameOver()) {
+      if (game.isCheckmate()) {
+        return game.turn() === "w" ? new GameEnd.BlackWins() : new GameEnd.WhiteWins();
+      } else {
+        return new GameEnd.Draw();
+      }
+    }
+  });
+
+  return { board, turn, moves, move, history, gameEnd };
 }

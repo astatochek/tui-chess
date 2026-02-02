@@ -54,7 +54,7 @@ function CursorConstructor() {
     if (key.ctrl || key.shift) {
       return;
     }
-    if (showPromotionDialog()) {
+    if (showPromotionDialog() || chess.gameEnd()) {
       return;
     }
     if (key.name === "k" || key.name === "up" || key.name === "w") {

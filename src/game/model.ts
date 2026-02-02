@@ -119,3 +119,22 @@ export class MoveError extends Error {
 
 export const PROMOTE_TO = ["q", "r", "b", "n"] as const satisfies PieceSymbol[];
 export type Promotable = (typeof PROMOTE_TO)[number];
+
+export namespace GameEnd {
+  export type Any = { tag: "white" | "black" | "draw"; msg: string };
+
+  export class WhiteWins implements Any {
+    readonly tag = "white";
+    readonly msg = "White Wins!";
+  }
+
+  export class BlackWins implements Any {
+    readonly tag = "black";
+    readonly msg = "Black Wins!";
+  }
+
+  export class Draw implements Any {
+    readonly tag = "draw";
+    readonly msg = "Draw";
+  }
+}

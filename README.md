@@ -6,7 +6,7 @@
 - [x] draw board
 - [x] pieces can be moved using keyboard
 - [x] info panel with player info and game state
-- [ ] end game handling
+- [x] end game handling
 - [x] promotions
 - [ ] mode selector and mode provider
 - [ ] play against computer mode
