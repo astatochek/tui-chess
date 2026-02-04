@@ -8,7 +8,7 @@ import {
 import { Chess, type Move, type Square } from "chess.js";
 import { identity, isNil, type Nil } from "@app/utils.ts";
 import { Board, GameEnd, MoveError, type Promotable } from "@app/game/model.ts";
-import { Err, Result } from "better-result";
+import { Err, type Ok, Result } from "better-result";
 
 export function useChess() {
   const ctx = useContext(ChessContext);
@@ -51,6 +51,9 @@ function ChessStoreConstructor() {
   function allMoves() {
     return chess().moves({ verbose: true });
   }
+  function fen() {
+    return chess().fen();
+  }
 
   function* move(from: Square, to: Square, promotion: Promotable | Nil) {
     const prev = chess();
@@ -73,5 +76,5 @@ function ChessStoreConstructor() {
     }
   });
 
-  return { board, turn, moves, allMoves, move, history, gameEnd };
+  return { board, turn, moves, allMoves, move, history, gameEnd, fen };
 }

@@ -117,6 +117,12 @@ export class MoveError extends Error {
   }
 }
 
+export class EngineError extends Error {
+  constructor(e: unknown) {
+    super(e instanceof Error ? e.message : JSON.stringify(e), { cause: e });
+  }
+}
+
 export const PROMOTE_TO = ["q", "r", "b", "n"] as const satisfies PieceSymbol[];
 export type Promotable = (typeof PROMOTE_TO)[number];
 

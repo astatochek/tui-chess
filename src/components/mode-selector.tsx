@@ -4,11 +4,11 @@ import { type Game, GameFactory } from "@app/game/game.tsx";
 import type { SelectOption } from "@opentui/core";
 import { GameAgainstYourself } from "@app/game/game-agains-yourself.ts";
 import type { Nil } from "@app/utils.ts";
-import { GameAgainstComputer } from "@app/game/game-against-computer.ts";
+import { GameAgainstJsChessEngine } from "@app/game/game-against-js-chess-engine.ts";
 
 enum Mode {
   AGAINST_YOURSELF,
-  AGAINST_COMPUTER,
+  AGAINST_ENGINE,
 }
 
 const TABS = [
@@ -18,9 +18,9 @@ const TABS = [
     description: "Play for both White and Black at the same time.",
   },
   {
-    name: "Against Computer",
-    value: Mode.AGAINST_COMPUTER,
-    description: "Play against a Computer that performs random moves",
+    name: "Against an Engine",
+    value: Mode.AGAINST_ENGINE,
+    description: "Play against an Engine. Uses 'js-chess-engine' internally.",
   },
 ] satisfies SelectOption[];
 
@@ -28,8 +28,8 @@ export const ModeSelector: Component<{ select: Setter<GameFactory | Nil> }> = (p
   function selectMode(mode: Mode) {
     if (mode === Mode.AGAINST_YOURSELF) {
       return props.select(new GameFactory(() => new GameAgainstYourself()));
-    } else if (mode === Mode.AGAINST_COMPUTER) {
-      return props.select(new GameFactory(() => new GameAgainstComputer()));
+    } else if (mode === Mode.AGAINST_ENGINE) {
+      return props.select(new GameFactory(() => new GameAgainstJsChessEngine()));
     }
   }
   return (

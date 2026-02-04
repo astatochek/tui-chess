@@ -8,8 +8,8 @@
 - [x] info panel with player info and game state
 - [x] end game handling
 - [x] promotions
-- [ ] mode selector and mode provider
-- [ ] play against computer mode
+- [x] mode selector and mode provider
+- [x] play against computer mode
 - [ ] play against another player mode
 - [ ] controller inputs
 
