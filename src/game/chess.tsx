@@ -34,7 +34,7 @@ const FEN = {
 } as const;
 
 function ChessStoreConstructor() {
-  const [chess, setChess] = createSignal(new Chess(FEN.WHITE_MATE_IN_ONE), {
+  const [chess, setChess] = createSignal(new Chess(), {
     equals: false,
   });
   const board = createMemo<Board>(

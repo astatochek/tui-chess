@@ -9,6 +9,14 @@ export type Game = {
   canMove: () => boolean;
 };
 
+export class GameFactory {
+  constructor(private readonly fn: () => Game) {}
+
+  create(): Game {
+    return this.fn();
+  }
+}
+
 export function useGame() {
   const ctx = useContext(GameContext);
   if (isNil(ctx)) {
@@ -17,8 +25,10 @@ export function useGame() {
   return ctx;
 }
 
-export const GameContextProvider: ParentComponent<{ game: Game }> = (props) => {
-  return <GameContext.Provider value={props.game}>{props.children}</GameContext.Provider>;
+export const GameContextProvider: ParentComponent<{ gameFactory: GameFactory }> = (props) => {
+  return (
+    <GameContext.Provider value={props.gameFactory.create()}>{props.children}</GameContext.Provider>
+  );
 };
 
 const GameContext = createContext<Game>();
