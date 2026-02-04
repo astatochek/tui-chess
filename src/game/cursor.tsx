@@ -12,6 +12,7 @@ import { useChess } from "@app/game/chess.tsx";
 import { useKeyboard } from "@opentui/solid";
 import { Result } from "better-result";
 import { firstValueFrom, Subject } from "rxjs";
+import { useGame } from "@app/game/game.tsx";
 
 export function useCursor() {
   const ctx = useContext(CursorContext);
@@ -29,6 +30,7 @@ export const CursorContextProvider: ParentComponent = (props) => {
 
 function CursorConstructor() {
   const chess = useChess();
+  const game = useGame();
 
   const [hoverPos, setHoverPos] = createSignal(Pos.rdn());
   const hovered = createMemo(() => chess.board().at(hoverPos()));
@@ -54,38 +56,34 @@ function CursorConstructor() {
     if (key.ctrl || key.shift) {
       return;
     }
-    if (showPromotionDialog() || chess.gameEnd()) {
+    if (showPromotionDialog() || !game.canMove()) {
       return;
     }
     if (key.name === "k" || key.name === "up" || key.name === "w") {
-      setHoverPos((pos) => pos.up());
+      setHoverPos((pos) => (game.playingAs() === "w" ? pos.up() : pos.down()));
     }
     if (key.name === "j" || key.name === "down" || key.name === "s") {
-      setHoverPos((pos) => pos.down());
+      setHoverPos((pos) => (game.playingAs() === "w" ? pos.down() : pos.up()));
     }
     if (key.name === "l" || key.name === "right" || key.name === "d") {
-      setHoverPos((pos) => pos.right());
+      setHoverPos((pos) => (game.playingAs() === "w" ? pos.right() : pos.left()));
     }
     if (key.name === "h" || key.name === "left" || key.name === "a") {
-      setHoverPos((pos) => pos.left());
+      setHoverPos((pos) => (game.playingAs() === "w" ? pos.left() : pos.right()));
     }
     if (key.name === "space") {
-      Result.gen(holdOrTryMove).then((res) => {
-        if (res.isErr()) {
-          console.error(res.error);
-        }
-      });
+      holdOrTryMove();
     }
   });
 
-  async function* holdOrTryMove() {
+  async function holdOrTryMove() {
     console.log("Holding handler");
     const holdingSquare = held()?.square;
-    const canHold = chess.turn() === hovered().pieceColor;
+    const canHold = game.playingAs() === hovered().pieceColor;
     if (canHold) {
       const isHoldingTheHovered = hovered().square === holdingSquare;
       setHoldingPos(isHoldingTheHovered ? void 0 : hoverPos());
-      return Result.ok();
+      return;
     }
     if (!isNil(holdingSquare)) {
       const isPromotion =
@@ -98,11 +96,12 @@ function CursorConstructor() {
         console.log("Promoted to:", promotion);
       }
       console.log("Attempting to move from:", holdingSquare);
-      yield* chess.move(holdingSquare, hovered().square, promotion);
-      setHoldingPos(void 0);
-      console.log("Moved to:", hovered().square);
+      const move = game.move(holdingSquare, hovered().square, promotion);
+      if (move) {
+        setHoldingPos(void 0);
+        console.log("Moved to:", hovered().square);
+      }
     }
-    return Result.ok();
   }
 
   createEffect(() => console.log("Holding:", held(), holdingPos()));

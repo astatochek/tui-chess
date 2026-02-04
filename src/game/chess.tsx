@@ -5,10 +5,10 @@ import {
   type ParentComponent,
   useContext,
 } from "solid-js";
-import { Chess, type Square } from "chess.js";
+import { Chess, type Move, type Square } from "chess.js";
 import { identity, isNil, type Nil } from "@app/utils.ts";
 import { Board, GameEnd, MoveError, type Promotable } from "@app/game/model.ts";
-import { Result } from "better-result";
+import { Err, Result } from "better-result";
 
 export function useChess() {
   const ctx = useContext(ChessContext);
@@ -55,7 +55,7 @@ function ChessStoreConstructor() {
       catch: (e) => new MoveError(e),
     });
     setChess(identity);
-    return move;
+    return Result.ok(move);
   }
 
   const gameEnd = createMemo(() => {
