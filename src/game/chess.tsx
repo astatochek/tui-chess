@@ -48,6 +48,10 @@ function ChessStoreConstructor() {
   function moves(square: Square) {
     return chess().moves({ square, verbose: true });
   }
+  function allMoves() {
+    return chess().moves({ verbose: true });
+  }
+
   function* move(from: Square, to: Square, promotion: Promotable | Nil) {
     const prev = chess();
     const move = yield* Result.try({
@@ -69,5 +73,5 @@ function ChessStoreConstructor() {
     }
   });
 
-  return { board, turn, moves, move, history, gameEnd };
+  return { board, turn, moves, allMoves, move, history, gameEnd };
 }

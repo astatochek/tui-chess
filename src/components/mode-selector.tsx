@@ -3,6 +3,8 @@ import { Overlay } from "@app/components/overlay.tsx";
 import { type Game, GameFactory } from "@app/game/game.tsx";
 import type { SelectOption } from "@opentui/core";
 import { GameAgainstYourself } from "@app/game/game-agains-yourself.ts";
+import type { Nil } from "@app/utils.ts";
+import { GameAgainstComputer } from "@app/game/game-against-computer.ts";
 
 enum Mode {
   AGAINST_YOURSELF,
@@ -22,10 +24,12 @@ const TABS = [
   },
 ] satisfies SelectOption[];
 
-export const ModeSelector: Component<{ select: Setter<GameFactory> }> = (props) => {
+export const ModeSelector: Component<{ select: Setter<GameFactory | Nil> }> = (props) => {
   function selectMode(mode: Mode) {
     if (mode === Mode.AGAINST_YOURSELF) {
       return props.select(new GameFactory(() => new GameAgainstYourself()));
+    } else if (mode === Mode.AGAINST_COMPUTER) {
+      return props.select(new GameFactory(() => new GameAgainstComputer()));
     }
   }
   return (
