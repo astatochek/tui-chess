@@ -149,10 +149,12 @@ export enum Mode {
   AGAINST_YOURSELF,
   AGAINST_CHESS_JS_ENGINE,
   LICHESS_CLOUD_EVAL,
+  AGAINST_STOCKFISH,
 }
 
 export const OPPONENT_NAME = {
   [Mode.AGAINST_YOURSELF]: "You",
   [Mode.AGAINST_CHESS_JS_ENGINE]: "Chess JS Engine",
   [Mode.LICHESS_CLOUD_EVAL]: "Lichess Cloud Eval",
+  [Mode.AGAINST_STOCKFISH]: "Stockfish v18",
 } as const satisfies Record<Mode, string>;

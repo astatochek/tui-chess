@@ -7,6 +7,7 @@ import type { Nil } from "@app/utils.ts";
 import { GameAgainstJsChessEngine } from "@app/game/game-against-js-chess-engine.ts";
 import { GameAgainstLichessCloudEval } from "@app/game/game-against-lichess-cloud-eval.ts";
 import { Mode } from "@app/game/model.ts";
+import { GameAgainstStockfish } from "@app/game/game-against-stockfish.ts";
 
 const TABS = [
   {
@@ -24,6 +25,11 @@ const TABS = [
     value: Mode.LICHESS_CLOUD_EVAL,
     description: "Play against an engine hosted with Lichess. 3000 req/day.",
   },
+  {
+    name: "Against Stockfish",
+    value: Mode.AGAINST_STOCKFISH,
+    description: "Play against Stockfish. Win/Linux only at the moment.",
+  },
 ] satisfies SelectOption[];
 
 export const ModeSelector: Component<{ select: Setter<GameFactory | Nil> }> = (props) => {
@@ -34,6 +40,8 @@ export const ModeSelector: Component<{ select: Setter<GameFactory | Nil> }> = (p
       return props.select(new GameFactory(() => new GameAgainstJsChessEngine()));
     } else if (mode === Mode.LICHESS_CLOUD_EVAL) {
       return props.select(new GameFactory(() => new GameAgainstLichessCloudEval()));
+    } else if (mode === Mode.AGAINST_STOCKFISH) {
+      return props.select(new GameFactory(() => new GameAgainstStockfish()));
     }
   }
   return (

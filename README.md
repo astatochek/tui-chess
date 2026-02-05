@@ -11,10 +11,13 @@
 - [x] mode selector and mode provider
 - [x] play against computer mode
 - [x] Stockfish with cloud eval and best line handling
-- [ ] local Stockfish
+- [x] local Stockfish
+- [ ] build
 - [ ] difficulty selector for computer mode
 - [ ] Esc to select mode and kill current session
 - [ ] play against another player mode
 - [ ] controller inputs
 
 This project was created using `bun create tui`. [create-tui](https://git.new/create-tui) is the easiest way to get started with OpenTUI.
+
+Stockfish can be downloaded from [the official website](https://stockfishchess.org/download/).
