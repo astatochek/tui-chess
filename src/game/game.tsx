@@ -1,9 +1,10 @@
-import type { Promotable } from "@app/game/model.ts";
+import { Mode, type Promotable } from "@app/game/model.ts";
 import { type Color, Move, type Square } from "chess.js";
 import { isNil, type Nil } from "@app/utils.ts";
 import { type Accessor, createContext, type ParentComponent, useContext } from "solid-js";
 
 export type Game = {
+  tag: Mode;
   move: (from: Square, to: Square, promotion: Promotable | Nil) => Move | Nil;
   playingAs: Accessor<Color>;
   canMove: () => boolean;

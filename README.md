@@ -10,6 +10,8 @@
 - [x] promotions
 - [x] mode selector and mode provider
 - [x] play against computer mode
+- [x] Stockfish with cloud eval and best line handling
+- [ ] local Stockfish
 - [ ] difficulty selector for computer mode
 - [ ] Esc to select mode and kill current session
 - [ ] play against another player mode

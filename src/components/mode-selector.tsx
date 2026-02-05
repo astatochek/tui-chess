@@ -5,11 +5,8 @@ import type { SelectOption } from "@opentui/core";
 import { GameAgainstYourself } from "@app/game/game-agains-yourself.ts";
 import type { Nil } from "@app/utils.ts";
 import { GameAgainstJsChessEngine } from "@app/game/game-against-js-chess-engine.ts";
-
-enum Mode {
-  AGAINST_YOURSELF,
-  AGAINST_ENGINE,
-}
+import { GameAgainstLichessCloudEval } from "@app/game/game-against-lichess-cloud-eval.ts";
+import { Mode } from "@app/game/model.ts";
 
 const TABS = [
   {
@@ -18,9 +15,14 @@ const TABS = [
     description: "Play for both White and Black at the same time.",
   },
   {
-    name: "Against an Engine",
-    value: Mode.AGAINST_ENGINE,
+    name: "Against Chess JS Engine",
+    value: Mode.AGAINST_CHESS_JS_ENGINE,
     description: "Play against an Engine. Uses 'js-chess-engine' internally.",
+  },
+  {
+    name: "Against Lichess Cloud Eval",
+    value: Mode.LICHESS_CLOUD_EVAL,
+    description: "Play against an engine hosted with Lichess. 3000 req/day.",
   },
 ] satisfies SelectOption[];
 
@@ -28,8 +30,10 @@ export const ModeSelector: Component<{ select: Setter<GameFactory | Nil> }> = (p
   function selectMode(mode: Mode) {
     if (mode === Mode.AGAINST_YOURSELF) {
       return props.select(new GameFactory(() => new GameAgainstYourself()));
-    } else if (mode === Mode.AGAINST_ENGINE) {
+    } else if (mode === Mode.AGAINST_CHESS_JS_ENGINE) {
       return props.select(new GameFactory(() => new GameAgainstJsChessEngine()));
+    } else if (mode === Mode.LICHESS_CLOUD_EVAL) {
+      return props.select(new GameFactory(() => new GameAgainstLichessCloudEval()));
     }
   }
   return (

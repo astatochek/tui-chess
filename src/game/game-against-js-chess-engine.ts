@@ -1,12 +1,13 @@
 import type { Game } from "@app/game/game.tsx";
 import { useChess } from "@app/game/chess.tsx";
 import type { Color, Move, Square } from "chess.js";
-import { EngineError, type Promotable } from "@app/game/model.ts";
+import { EngineError, Mode, type Promotable } from "@app/game/model.ts";
 import type { Nil } from "@app/utils.ts";
 import { Result } from "better-result";
 import { Game as EngineGame } from "js-chess-engine";
 
 export class GameAgainstJsChessEngine implements Game {
+  readonly tag = Mode.AGAINST_CHESS_JS_ENGINE;
   private readonly chess = useChess();
   private readonly youArePlayingAs: Color = Math.random() > 0.5 ? "w" : "b";
 

@@ -1,11 +1,12 @@
 import type { Game } from "@app/game/game.tsx";
 import { useChess } from "@app/game/chess.tsx";
 import type { Move, Square } from "chess.js";
-import type { Promotable } from "@app/game/model.ts";
+import { Mode, type Promotable } from "@app/game/model.ts";
 import type { Nil } from "@app/utils.ts";
 import { Result } from "better-result";
 
 export class GameAgainstYourself implements Game {
+  readonly tag = Mode.AGAINST_YOURSELF;
   private readonly chess = useChess();
 
   readonly playingAs = () => this.chess.turn();
